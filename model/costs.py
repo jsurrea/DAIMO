@@ -17,25 +17,25 @@ def save_costs():
     puentes = model.puentes
     bb = model.bb
     nodoMunicipio = model.nodoMunicipio
+    arcos = model.G.edges()
     
-    costoExcedente = {puente: 0 for puente in puentes}
+    costoExcedente = {arco: 0 for arco in arcos}
     ODVxPuente = {puente: [] for puente in puentes}
     arco2puente = model.rutas_por_puente()
-    costos = {puente: 0 for puente in puentes}
     
     total_cost_params = {
         "arco2puente": arco2puente,
         "ODVxPuente": ODVxPuente,
         "costoExcedente": costoExcedente,
-        "costos": costos,
     }
 
     # Costo original
     costoTotal = model.calculate_weighted_distances(bb, total_cost_params)
+    costos = {"TOTAL": (costoTotal,0)}
 
     # Alternativa con el puente
-    costos = {puente : model.calculate_cost([puente]) for puente in puentes}
-    costos["TOTAL"] = (costoTotal,0)
+    for puente in tqdm(puentes):
+        costos[puente] = model.calculate_cost([puente])
     model.costos = costos
 
     # Runtime

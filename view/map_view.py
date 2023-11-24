@@ -27,9 +27,7 @@ def render_map():
 
     # Create a colormap between green, yellow, and red
     costo_excedente_values = [cost[1]/cost[0] for p, cost in costs.items() if p != "TOTAL"]
-    norm = Normalize(vmin=0, vmax=max(costo_excedente_values)) #TODO min(costo_excedente_values)
-    print("Min",min(costo_excedente_values))
-    print("Max",max(costo_excedente_values))
+    norm = Normalize(vmin=0, vmax=max(costo_excedente_values))
     colormap = plt.cm.get_cmap("RdYlGn")
 
     for puente in model.get_puentes():
@@ -43,8 +41,7 @@ def render_map():
         hover_text = f"Puente {puente}<br>Costo Total: {costoTotal}<br>Costo Excedente: {costoExced*100:.5f}%"
 
         # Map costoExcedente to a color in the colormap
-        color = f'rgba{tuple(int(255 * c) for c in colormap(norm(costs_tuple[1]/costs_tuple[0])))}' 
-        print(puente, costs_tuple[1]/costs_tuple[0])
+        color = f'rgba{tuple(int(255 * c) for c in colormap(1 - norm(costs_tuple[1]/costs_tuple[0])))}' 
 
         # Add scattermapbox trace for the bridge start and end coordinates
         fig.add_trace(
@@ -69,8 +66,3 @@ def render_map():
     )
     
     return dcc.Graph(figure=fig)
-
-
-
-
-# TODO # Resaltar los puentes que queden seleccionados

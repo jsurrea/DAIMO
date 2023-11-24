@@ -106,7 +106,7 @@ class Model:
 
         puentes = set(puentes)
 
-        costoAlternativa = self.costos["TOTAL"]
+        costoAlternativa = self.costos["TOTAL"][0]
         ODVs = set()
 
         edge_data = {}
@@ -118,12 +118,12 @@ class Model:
                 if self.G.has_edge(i,j):
                     edge_data[i,j] = self.G.get_edge_data(i,j)
                     self.G.remove_edge(i,j)
+                    costoAlternativa -= self.costoExcedente[(i,j)]
 
-            costoAlternativa -= self.costoExcedente[puente]
             ODVs |= set(self.ODVxPuente[puente])
             
         costoAlternativa += self.calculate_weighted_distances(ODVs)
-        deltaCosto = costoAlternativa - self.costos["TOTAL"]
+        deltaCosto = costoAlternativa - self.costos["TOTAL"][0]
 
         for i,j in edge_data.keys():
             self.G.add_edge(i,j, **edge_data[i,j])
@@ -154,13 +154,12 @@ class Model:
                     if arco in total_cost_params["arco2puente"]:
                         puente = total_cost_params["arco2puente"][arco]
                         total_cost_params["ODVxPuente"][puente].append((origen,destino,veh))
-                        total_cost_params["costoExcedente"][puente] += distance
+                        total_cost_params["costoExcedente"][arco] = distance
                         
         if total_cost_params:
             self.arco2puente = total_cost_params["arco2puente"]
             self.ODVxPuente = total_cost_params["ODVxPuente"]
             self.costoExcedente = total_cost_params["costoExcedente"]
-            self.costos = {"TOTAL": costo_calculado}
             
         return costo_calculado
     

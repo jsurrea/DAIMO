@@ -58,7 +58,7 @@ def create_modal(app):
         if "btn_calcular" in ctx.triggered_id:
             costo_alternativa, delta_costo = model.calculate_cost(selected_puentes)
             costo_alternativa = locale.currency(costo_alternativa, grouping=True)
-            costo_original = model.get_base_costs()["TOTAL"]
+            costo_original = model.get_base_costs()["TOTAL"][0]
             result_list = [
                 html.P(f"El costo total de la intervención es: {costo_alternativa}"),
                 html.P(f"La diferencia respecto al costo original es: {delta_costo/costo_original*100:.5f}%"),
