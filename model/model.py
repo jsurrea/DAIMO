@@ -115,6 +115,7 @@ class Model:
             arcos = self.axp[puente]
 
             for i,j in arcos:
+                i,j = (min(i,j), max(i,j))
                 if self.G.has_edge(i,j):
                     edge_data[i,j] = self.G.get_edge_data(i,j)
                     self.G.remove_edge(i,j)
@@ -150,11 +151,11 @@ class Model:
             if total_cost_params:
                 
                 for i in range(1, len(path)):
-                    arco = (path[i-1], path[i])
+                    arco = (min(path[i-1], path[i]), max(path[i-1], path[i]))
                     if arco in total_cost_params["arco2puente"]:
                         puente = total_cost_params["arco2puente"][arco]
                         total_cost_params["ODVxPuente"][puente].append((origen,destino,veh))
-                        total_cost_params["costoExcedente"][arco] = distance
+                        total_cost_params["costoExcedente"][arco] += distance
                         
         if total_cost_params:
             self.arco2puente = total_cost_params["arco2puente"]
@@ -174,6 +175,7 @@ class Model:
             arcos = self.axp[puente]
             for arco in arcos:
                 arco2puente[arco] = puente
+                arco2puente[arco[::-1]] = puente
                 
         self.arco2puente = arco2puente
         return arco2puente
