@@ -1,10 +1,13 @@
-from dash import html
+from .content import create_puentes_criticos_content
+from .sidebar import create_puentes_criticos_sidebar
 
 def create_puentes_criticos_layout(app):
     """
     Create layout of the puentes_criticos component
     """
 
-    puentes_criticos = html.P("Puentes Críticos")
+    # Create layout
+    content = create_puentes_criticos_content(app)
+    sidebar = create_puentes_criticos_sidebar(app)
 
-    return puentes_criticos
+    return (content, sidebar)

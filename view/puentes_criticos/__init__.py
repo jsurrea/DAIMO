@@ -1,0 +1,1 @@
+from .layout import create_puentes_criticos_layout

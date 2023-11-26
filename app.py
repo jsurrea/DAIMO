@@ -1,6 +1,6 @@
 import dash
 import dash_bootstrap_components as dbc
-from view.app.layout import create_app_layout
+from view import create_app_layout
 
 def run_app(debug = False):
     """
