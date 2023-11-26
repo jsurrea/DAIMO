@@ -1,6 +1,6 @@
 import dash
 import dash_bootstrap_components as dbc
-from view.base.layout import create_layout
+from view.app.layout import create_app_layout
 
 def run_app(debug = False):
     """
@@ -11,7 +11,7 @@ def run_app(debug = False):
     # Create app
     app = dash.Dash(external_stylesheets = [dbc.themes.BOOTSTRAP])
     app.title = "DAIMO"
-    app.layout = create_layout(app)
+    app.layout = create_app_layout(app)
         
     # Run app
     app.run_server(debug=debug, port=8086)

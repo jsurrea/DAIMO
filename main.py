@@ -1,14 +1,18 @@
 from app import run_app
-from model.parameters import save_parameters
 from model.costs import save_costs
+from model.parameters import save_parameters
 
-if __name__ == "__main__":
+def main():
+    """
+    Entry point for the application
+    """
     
     print("DAIMO: Dashboard para el Análisis de Intervenciones en Movilidad")
     print("1. Construir el grafo")
     print("2. Calcular los costos")
     print("3. Ejecutar la aplicación")
     print()
+    print("> ")
 
     choice = input("Ingresa una opción (1/2/3): ")
 
@@ -20,3 +24,7 @@ if __name__ == "__main__":
         run_app()
     else:
         print("Opción incorrecta")
+
+
+if __name__ == "__main__":
+    main()
