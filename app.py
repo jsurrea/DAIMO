@@ -22,16 +22,29 @@ def run_app(debug = False):
     sidebar = create_sidebar(app)
     navbar = create_navbar(app)
     modal = create_modal(app)
+    #home = create_home(app)
     
     app.layout = html.Div(
         [
+            dcc.Location(id='url', refresh=False),
             navbar,
-            sidebar,
-            modal,
-            content,
+            html.Div(id='page-content'),
+            #sidebar,
+            #modal,
+            #content,
         ],
     )
-    
+
+    # Routing
+    @app.callback(Output('page-content', 'children'), [Input('url', 'pathname')])
+    def display_page(pathname):
+        if pathname == '/page-1':
+            return html.P("This is Page 1")
+        elif pathname == '/page-2':
+            return html.P("This is Page 2")
+        else:
+            return html.P("This is the default page")
+        
     app.run_server(debug=debug, port=8086)
 
 
