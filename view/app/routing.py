@@ -11,7 +11,7 @@ def create_app_routing(app):
     """
 
     # Create location component
-    location = dcc.Location(id='url', refresh=False),
+    location = dcc.Location(id = 'url', refresh = False)
     
     # Create routing layouts 
     home_layout = create_home_layout(app)
@@ -25,7 +25,7 @@ def create_app_routing(app):
     def display_page(pathname):
         if pathname == '/':
             return home_layout
-        elif pathname == '/puentes_criticos':
+        elif pathname == '/puentes-criticos':
             return puentes_criticos_layout
         elif pathname == '/intervenciones-simultaneas':
             return intervenciones_simultaneas_layout

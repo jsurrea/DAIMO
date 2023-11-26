@@ -12,7 +12,7 @@ def create_app_layout(app):
     location = create_app_routing(app)
     navbar = create_navbar_layout(app)
     content = create_content_layout(app)
-
+    
     # Create layout
     app = html.Div([
         location,

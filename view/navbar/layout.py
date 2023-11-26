@@ -25,7 +25,7 @@ def create_navbar_layout(app):
                 children = "Configuración", 
                 outline = True, 
                 color = "secondary", 
-                class_name = "mr-1", 
+                className = "mr-1", 
                 id = "btn_sidebar"
             ),
         ],
@@ -39,8 +39,6 @@ def create_navbar_layout(app):
         color = "dark",
         dark = True,
         fluid = True,
-        pills = True,
-        fill = True,
     )
     
     return navbar
