@@ -1,9 +1,4 @@
-import dash
-from dash import dcc
-from dash import html
-from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
-import plotly.express as px
 
 def create_navbar_layout(app):
     """

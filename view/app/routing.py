@@ -23,11 +23,13 @@ def create_app_routing(app):
         Input('url', 'pathname'),
     )
     def display_page(pathname):
-        if pathname == '/puentes_criticos':
+        if pathname == '/':
+            return home_layout
+        elif pathname == '/puentes_criticos':
             return puentes_criticos_layout
         elif pathname == '/intervenciones-simultaneas':
             return intervenciones_simultaneas_layout
         else:
-            return home_layout
+            return f"The pathname {pathname} was not recognised..."
 
     return location

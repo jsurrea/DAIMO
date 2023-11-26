@@ -14,10 +14,10 @@ def create_app_layout(app):
     content = create_content_layout(app)
 
     # Create layout
-    layout = html.Div([
+    app = html.Div([
         location,
         navbar,
         content,
     ])
     
-    return layout
+    return app

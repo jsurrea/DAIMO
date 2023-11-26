@@ -6,8 +6,8 @@ def create_content_layout(app):
     """
     
     # Create layout
-    layout = html.Div([
+    content = html.Div([
         html.Div(id='page-content'),
     ])
     
-    return layout
+    return content
