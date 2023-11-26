@@ -6,8 +6,9 @@ def create_sidebar_layout(app):
     """
     
     # Create layout
-    sidebar = html.Div([
-        html.Div(id='page-sidebar'),
-    ])
+    sidebar = html.Div(
+        children = [],
+        id='page-sidebar',
+    )
     
     return sidebar

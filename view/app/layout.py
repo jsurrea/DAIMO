@@ -3,6 +3,7 @@ from .routing import create_app_routing
 from .navbar import create_navbar_layout
 from .sidebar import create_sidebar_layout
 from .content import create_content_layout
+from .callbacks import register_callbacks
 
 def create_app_layout(app):
     """
@@ -16,11 +17,14 @@ def create_app_layout(app):
     content = create_content_layout(app)
     
     # Create layout
-    app = html.Div([
+    layout = html.Div([
         location,
         navbar,
         sidebar,
         content,
     ])
+
+    # Register callbacks
+    register_callbacks(app)
     
-    return app
+    return layout

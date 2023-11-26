@@ -26,7 +26,7 @@ def create_navbar_layout(app):
                 outline = True, 
                 color = "secondary", 
                 className = "mr-1", 
-                id = "btn_sidebar"
+                id = "btn-sidebar"
             ),
         ],
         brand = dbc.NavItem(
