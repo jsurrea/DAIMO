@@ -1,7 +1,6 @@
-from dash import html
-from dash import dcc
+from dash import html, dcc
 
-def create_home_sidebar(app):
+def create_home_sidebar():
     """
     Create layout of the home sidebar component
     """
@@ -37,7 +36,7 @@ def create_home_sidebar(app):
             dcc.Upload(
                 id = 'upload-data',
                 children = html.Div([
-                    html.A('Añadir un Archivo'),
+                    html.A('Añadir un archivo'),
                 ]),
                 style = {
                     'width': '100%',
@@ -54,6 +53,7 @@ def create_home_sidebar(app):
                 # Allow multiple files to be uploaded
                 multiple = False,
             ),
+            html.Div(id = 'output-data-upload'),
             html.P(
                 children = "Tenga en cuenta que la carga de un nuevo conjunto de datos puede tardar varias horas.",
                 className = "fst-italic",

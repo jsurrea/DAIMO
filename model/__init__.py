@@ -1,1 +1,2 @@
+from .loading import load_new_data
 from .endpoints import get_puentes_criticos_content_data, get_intervenciones_simultaneas_data

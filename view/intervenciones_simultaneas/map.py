@@ -7,7 +7,7 @@ locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 def render_map():
     """
-    Render the map of the bridges and their costs
+    Render the map of the simulation
     """
     # TODO
     

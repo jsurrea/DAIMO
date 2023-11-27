@@ -1,7 +1,7 @@
 from dash import html
 from .map import render_map
 
-def create_puentes_criticos_content(app):
+def create_puentes_criticos_content():
     """
     Create layout of the puentes_criticos content component
     """

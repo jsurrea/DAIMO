@@ -1,6 +1,6 @@
 import dash_bootstrap_components as dbc
 
-def create_navbar_layout(app):
+def create_navbar_layout():
     """
     Create layout of the navbar component
     """

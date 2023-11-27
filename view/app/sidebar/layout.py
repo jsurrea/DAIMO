@@ -1,6 +1,6 @@
 from dash import html
 
-def create_sidebar_layout(app):
+def create_sidebar_layout():
     """
     Create layout of the sidebar component
     """

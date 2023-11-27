@@ -1,6 +1,6 @@
 from dash import html
 
-def create_content_layout(app):
+def create_content_layout():
     """
     Create layout of the content component
     """

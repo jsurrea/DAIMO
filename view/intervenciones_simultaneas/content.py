@@ -1,8 +1,8 @@
 from dash import html
-import dash_bootstrap_components as dbc
 from .map import render_map 
+import dash_bootstrap_components as dbc
 
-def create_intervenciones_simultaneas_content(app):
+def create_intervenciones_simultaneas_content():
     """
     Create layout of the intervenciones_simultaneas content component
     """

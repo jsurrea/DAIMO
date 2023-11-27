@@ -1,10 +1,9 @@
-from dash import dcc
-from dash.dependencies import Input, Output
+from dash import dcc, Input, Output, callback
 from ..home import create_home_layout
 from ..intervenciones_simultaneas import create_intervenciones_simultaneas_layout
 from ..puentes_criticos import create_puentes_criticos_layout
 
-def create_app_routing(app):
+def create_app_routing():
     """
     Create location component 
     Add routing callbacks for the app
@@ -14,11 +13,11 @@ def create_app_routing(app):
     location = dcc.Location(id = 'url', refresh = False)
     
     # Create routing layouts, each a tuple (content, sidebar)
-    home_layout = create_home_layout(app)
-    puentes_criticos_layout = create_puentes_criticos_layout(app)
-    intervenciones_simultaneas_layout = create_intervenciones_simultaneas_layout(app)
+    home_layout = create_home_layout()
+    puentes_criticos_layout = create_puentes_criticos_layout()
+    intervenciones_simultaneas_layout = create_intervenciones_simultaneas_layout()
 
-    @app.callback(
+    @callback(
         Output('page-content', 'children'), 
         Output('page-sidebar', 'children'), 
         Input('url', 'pathname'),
