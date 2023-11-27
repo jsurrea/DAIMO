@@ -2,7 +2,7 @@ import locale
 from dash import dcc
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-from model import get_puentes_criticos_content_data #TODO
+from logic import get_puentes_criticos_content_data #TODO
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 def render_map():

@@ -11,17 +11,6 @@ class Model:
     Model class for the project
     """
     
-    instance = None
-    
-    @staticmethod
-    def get():
-        """
-        Get the singleton instance of the model
-        """
-        if not Model.instance:
-            Model.instance = Model()
-        return Model.instance
-    
 
     def load_parameters(self):
         

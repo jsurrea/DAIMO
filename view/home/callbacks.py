@@ -1,5 +1,5 @@
-from model import load_new_data
-from dash import Input, Output, callback
+from logic import load_new_data
+from dash import Input, Output, State, callback, html
 
 def register_home_callbacks():
     """
@@ -8,15 +8,16 @@ def register_home_callbacks():
     
     @callback(
         Output('output-data-upload', 'children'),
-        Input('upload-data', 'filename'),
+        Input('upload-data', 'contents'),
+        State('upload-data', 'filename'),
     )
-    def update_data_output(filename):
+    def update_data_output(contents, filename):
         """
         Update the output of the data upload component
         """
         if filename is not None:
             try:
-                load_new_data(filename)
+                load_new_data(contents, filename)
             except Exception as e:
                 print(e)
                 return html.Div(

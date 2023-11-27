@@ -3,7 +3,7 @@ from dash import dcc
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from matplotlib.colors import Normalize
-from model import get_puentes_criticos_content_data
+from logic import get_puentes_criticos_content_data
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 def render_map():
