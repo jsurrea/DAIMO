@@ -1,4 +1,6 @@
+from dash import Dash
 from view import create_app_layout
+import dash_bootstrap_components as dbc
 
 def run_app(debug = False):
     """
@@ -6,7 +8,9 @@ def run_app(debug = False):
     debug: True if you want to run the app in debug mode
     """
     # Create app
-    app = create_app_layout()
+    app = Dash(external_stylesheets = [dbc.themes.BOOTSTRAP])
+    app.title = "DAIMO"
+    app.layout = create_app_layout()
         
     # Run app
     app.run_server(debug=debug, port=8086)
