@@ -13,7 +13,9 @@ def create_home_content(app):
                     children = "DAIMO: Dashboard para el Análisis de Intervenciones en Movilidad", 
                     className = "display-3",
                 ),
-                html.Hr(className="my-4"),
+                html.Hr(
+                    className="my-4"
+                ),
                 dbc.Row(
                     children = [
                         dbc.Col(

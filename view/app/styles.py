@@ -4,7 +4,7 @@ def get_visible_styles():
     """
 
     sidebar_style = {
-        "position": "fixed",
+        "position": "absolute",
         "top": 62.5,
         "left": 0,
         "bottom": 0,
@@ -21,7 +21,7 @@ def get_visible_styles():
         "transition": "margin-left .5s",
         "margin-left": "18rem",
         "margin-right": "2rem",
-        "padding": "2rem 1rem",
+        "padding": "1rem 1rem",
         "background-color": "#f8f9fa",
     }
 
@@ -50,7 +50,7 @@ def get_hidden_styles():
         "transition": "margin-left .5s",
         "margin-left": "2rem",
         "margin-right": "2rem",
-        "padding": "2rem 1rem",
+        "padding": "1rem 1rem",
         "background-color": "#f8f9fa",
     }
 
