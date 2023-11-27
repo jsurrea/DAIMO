@@ -1,1 +1,2 @@
-from .layout import create_intervenciones_simultaneas_layout
+from .content import create_intervenciones_simultaneas_content_layout
+from .sidebar import create_intervenciones_simultaneas_sidebar_layout

@@ -1,6 +1,6 @@
 from dash import html, dcc
 
-def create_home_sidebar():
+def create_home_sidebar_layout():
     """
     Create layout of the home sidebar component
     """

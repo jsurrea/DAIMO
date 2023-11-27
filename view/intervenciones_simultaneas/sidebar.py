@@ -1,6 +1,6 @@
 from dash import html, dcc
 
-def create_intervenciones_simultaneas_sidebar():
+def create_intervenciones_simultaneas_sidebar_layout():
     """
     Create layout of the intervenciones_simultaneas sidebar component
     """

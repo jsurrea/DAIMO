@@ -2,7 +2,7 @@ from dash import html
 from .map import render_map 
 import dash_bootstrap_components as dbc
 
-def create_intervenciones_simultaneas_content():
+def create_intervenciones_simultaneas_content_layout():
     """
     Create layout of the intervenciones_simultaneas content component
     """

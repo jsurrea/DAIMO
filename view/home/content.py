@@ -1,7 +1,7 @@
 from dash import html
 import dash_bootstrap_components as dbc
 
-def create_home_content():
+def create_home_content_layout():
     """
     Create layout of the home content component
     """

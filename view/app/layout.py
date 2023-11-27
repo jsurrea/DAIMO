@@ -3,6 +3,7 @@ from .routing import create_app_routing
 from .navbar import create_navbar_layout
 from .sidebar import create_sidebar_layout
 from .content import create_content_layout
+from ..home import register_home_callbacks
 from .callbacks import register_app_callbacks
 
 def create_app_layout():
@@ -25,5 +26,6 @@ def create_app_layout():
 
     # Register callbacks
     register_app_callbacks()
+    register_home_callbacks()
     
     return layout

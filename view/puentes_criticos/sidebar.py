@@ -2,7 +2,7 @@ from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
 
-def create_puentes_criticos_sidebar():
+def create_puentes_criticos_sidebar_layout():
     """
     Create layout of the puentes_criticos sidebar component
     """

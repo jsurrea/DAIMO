@@ -1,1 +1,2 @@
-from .layout import create_puentes_criticos_layout
+from .content import create_puentes_criticos_content_layout
+from .sidebar import create_puentes_criticos_sidebar_layout
