@@ -18,6 +18,13 @@ def register_home_callbacks():
         if filename is not None:
             try:
                 load_new_data(contents, filename)
+                return html.Div(
+                    children = [
+                        'El archivo se cargó correctamente.',
+                    ],
+                    className = "alert alert-success",
+                    role = "alert",
+                )
             except Exception as e:
                 print(e)
                 return html.Div(
