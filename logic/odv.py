@@ -1,5 +1,6 @@
 import networkx as nx
 from tqdm import tqdm
+from collections import defaultdict
 
 def calculate_odv_parameters(data_model):
     """
@@ -14,6 +15,8 @@ def calculate_odv_parameters(data_model):
     
     cost_by_odv = {}
     odv_by_bridge = {bridge: set() for bridge in bridges_df.id_puente.unique()}
+    flow_by_edge = defaultdict(int)
+    affected_flows_by_odv = defaultdict(list)
 
     for nodo_origen, nodo_destino, vehiculo, demanda in tqdm(odv_df.itertuples(index=False, name=None), desc="Calculating ODV parameters", total=len(odv_df)):
 
@@ -21,12 +24,12 @@ def calculate_odv_parameters(data_model):
             continue
 
         multi_target = odv_df.nodo_destino[(odv_df.nodo_origen == nodo_origen) & (odv_df.vehiculo == vehiculo)].tolist()
-        distance, path = nx.single_source_dijkstra(G, source=nodo_origen, weight=vehiculo)
+        distance_all, path_all = nx.single_source_dijkstra(G, source=nodo_origen, weight=vehiculo)
 
         for nodo_destino in multi_target:
 
-            distance = distance[nodo_destino]
-            path = path[nodo_destino]
+            distance = distance_all[nodo_destino]
+            path = path_all[nodo_destino]
 
             cost = distance * demanda
             cost_by_odv[(nodo_origen, nodo_destino, vehiculo)] = cost
@@ -35,5 +38,11 @@ def calculate_odv_parameters(data_model):
             for bridge_affected in bridges_df.id_puente[bridge_edges.isin(edges_path)]:
                 odv_by_bridge[bridge_affected].add((nodo_origen, nodo_destino, vehiculo))
 
-    return cost_by_odv, odv_by_bridge
+            multiplier = 3 if vehiculo == "C-2" else 4 if vehiculo == "C-3-4" else 5
+            demanda_equivalente = demanda * multiplier
 
+            for i,j in edges_path:
+                flow_by_edge[i,j] += demanda_equivalente
+                affected_flows_by_odv[nodo_origen, nodo_destino, vehiculo].append((i,j,demanda_equivalente))
+
+    return cost_by_odv, odv_by_bridge, flow_by_edge, affected_flows_by_odv

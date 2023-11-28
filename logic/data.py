@@ -31,9 +31,11 @@ def load_new_data(contents, filename):
         G = create_graph(DataModel)
         DataModel.G = G
 
-        cost_by_odv, odv_by_bridge = calculate_odv_parameters(DataModel)
+        cost_by_odv, odv_by_bridge, flow_by_edge, affected_flows_by_odv = calculate_odv_parameters(DataModel)
         DataModel.cost_by_odv = cost_by_odv
         DataModel.odv_by_bridge = odv_by_bridge
+        DataModel.flow_by_edge = flow_by_edge
+        DataModel.affected_flows_by_odv = affected_flows_by_odv
 
         base_cost, intervention_costs = calculate_initial_costs(DataModel)
         DataModel.base_cost = base_cost

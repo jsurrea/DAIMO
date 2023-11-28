@@ -1,5 +1,5 @@
 import networkx as nx
-
+from tqdm import tqdm
 
 def calculate_initial_costs(data_model):
     """
@@ -15,7 +15,7 @@ def calculate_initial_costs(data_model):
     base_cost = sum(cost_by_odv.values())
     intervention_costs = {}
     for bridge in tqdm(bridges_df.id_puente.unique(), desc="Calculating intervention costs", total=len(bridges_df.id_puente.unique())):
-        intervention_costs[bridge] = calculate_intervention_costs([bridge], data_model)
+        intervention_costs[bridge] = calculate_intervention_cost([bridge], data_model)
     return base_cost, intervention_costs
 
 
@@ -29,6 +29,8 @@ def calculate_intervention_cost(bridges, data_model):
     bridges_df = data_model.puentes
     odv_df = data_model.od
     G = data_model.G
+    flow_by_edge = data_model.flow_by_edge
+    affected_flows_by_odv = data_model.affected_flows_by_odv
 
     edge_data = {}
     changed_odvs = set()
@@ -42,11 +44,35 @@ def calculate_intervention_cost(bridges, data_model):
     old_cost = sum(cost_by_odv[odv] for odv in changed_odvs)
     new_cost = 0
 
+    calculated_odvs = set()
+
     for nodo_origen, nodo_destino, vehiculo in changed_odvs:
-        demanda = odv_df[(odv_df.nodo_origen == nodo_origen) & (odv_df.nodo_destino == nodo_destino) & (odv_df.vehiculo == vehiculo)].demanda.values[0]
-        distance, path = nx.single_source_dijkstra(G, source=nodo_origen, target=nodo_destino, weight=vehiculo)
-        cost = distance * demanda
-        new_cost += cost
+
+        if (nodo_origen, nodo_destino, vehiculo) in calculated_odvs:
+            continue
+
+        multi_target = odv_df.nodo_destino[(odv_df.nodo_origen == nodo_origen) & (odv_df.vehiculo == vehiculo)].tolist()
+        distance_all, path_all = nx.single_source_dijkstra(G, source=nodo_origen, weight=vehiculo)
+
+        for i,j,flow_to_remove in affected_flows_by_odv[nodo_origen, nodo_destino, vehiculo]:
+            flow_by_edge[i,j] -= flow_to_remove
+
+        for nodo_destino in multi_target:
+
+            distance = distance_all[nodo_destino]
+            path = path_all[nodo_destino]
+            demanda = odv_df[(odv_df.nodo_origen == nodo_origen) & (odv_df.nodo_destino == nodo_destino) & (odv_df.vehiculo == vehiculo)].demanda.values[0]
+            
+            cost = distance * demanda
+            new_cost += cost
+
+            multiplier = 3 if vehiculo == "C-2" else 4 if vehiculo == "C-3-4" else 5
+            demanda_equivalente = demanda * multiplier
+            edges_path = set((min(i,j), max(i,j)) for i,j in zip(path, path[1:]))
+            for i,j in edges_path:
+                flow_by_edge[i,j] += demanda_equivalente
+
+            calculated_odvs.add((nodo_origen, nodo_destino, vehiculo))
 
     for i,j in edge_data.keys():
         G.add_edge(i,j, **edge_data[i,j])
