@@ -2,7 +2,7 @@ import locale
 from dash import dcc
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-from logic import get_puentes_criticos_content_data #TODO
+from logic import get_intervenciones_simultaneas_map_data
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 def render_map():
@@ -12,32 +12,25 @@ def render_map():
     # TODO
     
     # Get the data from the model
-    data = get_puentes_criticos_content_data()
+    data = get_intervenciones_simultaneas_map_data()
 
     # Create a figure with scattermapbox trace for points
     fig = go.Figure()
 
     for (
-        puente, 
-        costo_excedente, 
-        porcentaje_excedente, 
         latitudes, 
-        longitudes,
+        longitudes, 
+        flujo
     ) in data:
 
         # Add scattermapbox trace for the bridge start and end coordinates
         fig.add_trace(
             go.Scattermapbox(
-                mode = "lines+markers",
+                mode = "lines",
                 lat = latitudes,
                 lon = longitudes,
-                name = f"Puente {puente}",
-                hovertext = "<br>".join([
-                    f"Costo excedente por intervención: {locale.currency(costo_excedente, grouping = True)}",
-                    f"Porcentaje excedente por intervención: {porcentaje_excedente*100:.5f}%",
-                ]),
                 #marker = dict(color = color), TODO
-                #line = dict(color = color, width = 2), TODO
+                line = dict(color = "blue", width = flujo / 100), #TODO
                 showlegend = False,
             )
         )

@@ -3,6 +3,8 @@
 
 # Arreglar creación de params y costos
 
+# Revisar problema de que grafo se desconecta si quito muchos puentes
+
 ##### añadir funcionalidad intervencion simultanea
 
     @app.callback(

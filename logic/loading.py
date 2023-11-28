@@ -12,8 +12,10 @@ def load_new_data(contents, filename):
     try:
         content_type, content_string = contents.split(',')
         decoded = base64.b64decode(content_string)
-        df = pd.read_excel(io.BytesIO(decoded))
-        5/0 #TODO
+        dfs = pd.read_excel(
+            io.BytesIO(decoded), 
+            sheet_name = ["principal", "od", "puentes"],
+        )
 
     # Handle exceptions with debbuger
     except:
