@@ -1,11 +1,12 @@
 import networkx as nx
 
-def create_graph(edges_df):
+def create_graph(data_model):
     """
     Create a graph from the dataframes
     """
 
     print("Creating graph")
+    edges_df = data_model.principal
     G = nx.from_pandas_edgelist(
         df = edges_df,
         source = "source",

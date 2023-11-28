@@ -1,21 +1,34 @@
 import networkx as nx
 
 
-def calculate_initial_costs(cost_by_odv, odv_by_bridge, bridges_df, odv_df, G):
+def calculate_initial_costs(data_model):
     """
     Calculate initial costs of the road network.
     """
+
+    cost_by_odv = data_model.cost_by_odv
+    odv_by_bridge = data_model.odv_by_bridge
+    bridges_df = data_model.puentes
+    odv_df = data_model.od
+    G = data_model.G
+
     base_cost = sum(cost_by_odv.values())
     intervention_costs = {}
     for bridge in tqdm(bridges_df.id_puente.unique(), desc="Calculating intervention costs", total=len(bridges_df.id_puente.unique())):
-        intervention_costs[bridge] = calculate_intervention_costs([bridge], cost_by_odv, odv_by_bridge, bridges_df, odv_df, G)
+        intervention_costs[bridge] = calculate_intervention_costs([bridge], data_model)
     return base_cost, intervention_costs
 
 
-def calculate_intervention_cost(bridges, cost_by_odv, odv_by_bridge, bridges_df, odv_df, G):
+def calculate_intervention_cost(bridges, data_model):
     """
     Calculate difference of cost of the road network after an intervention.
     """
+
+    cost_by_odv = data_model.cost_by_odv
+    odv_by_bridge = data_model.odv_by_bridge
+    bridges_df = data_model.puentes
+    odv_df = data_model.od
+    G = data_model.G
 
     edge_data = {}
     changed_odvs = set()

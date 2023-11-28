@@ -1,9 +1,11 @@
+import pickle
 import pandas as pd
 import pdb, traceback, sys, base64, io, os
 from .graph import create_graph
 from .odv import calculate_odv_parameters
 from .dataframes import clean_dataframes
 from .costs import calculate_initial_costs
+from .model import DataModel
 
 def load_new_data(contents, filename):
     """
@@ -20,10 +22,24 @@ def load_new_data(contents, filename):
             io.BytesIO(decoded), 
             sheet_name = ["principal", "od", "puentes"],
         )
+
         dfs = clean_dataframes(dfs)
-        G = create_graph(dfs["principal"])
-        cost_by_odv, odv_by_bridge = calculate_odv_parameters(dfs["od"], dfs["puentes"], G)
-        base_cost, intervention_costs = calculate_initial_costs(cost_by_odv, odv_by_bridge, dfs["puentes"], dfs["od"], G)
+        DataModel.principal = dfs["principal"]
+        DataModel.od = dfs["od"]
+        DataModel.puentes = dfs["puentes"]
+
+        G = create_graph(DataModel)
+        DataModel.G = G
+
+        cost_by_odv, odv_by_bridge = calculate_odv_parameters(DataModel)
+        DataModel.cost_by_odv = cost_by_odv
+        DataModel.odv_by_bridge = odv_by_bridge
+
+        base_cost, intervention_costs = calculate_initial_costs(DataModel)
+        DataModel.base_cost = base_cost
+        DataModel.intervention_costs = intervention_costs
+
+        save_new_data(DataModel, filename.replace(".xlsx", ".pkl"))
         print("Data loaded successfully")
 
     # Handle exceptions with debbuger
@@ -36,11 +52,16 @@ def load_new_data(contents, filename):
         pdb.post_mortem(traceback_object)
         raise exception_object
 
-def save_new_data(data, base_dir):
+
+def save_new_data(data, filename):
     """
     Save data in the application
     """
-    save_dir = os.path.join("data", base_dir)
+    os.makedirs("data", exist_ok=True)
+    filepath = os.path.join("data", filename)
+    with open(filepath, "wb") as f:
+        pickle.dump(data, f)
+
 
 def load_saved_data():
     """
