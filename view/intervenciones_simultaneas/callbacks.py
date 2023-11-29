@@ -22,16 +22,16 @@ def register_intervenciones_simultaneas_callbacks():
         else:
             return []
 
-    # @callback(
-    #     Output("puentes-criticos-text", "children"),
-    #     Input("app-storage", "data"),
-    # )
-    # def update_text(data_name):
-    #     """
-    #     Update the text of the intervenciones_simultaneas component
-    #     """
-    #     base_cost = get_base_cost()
-    #     return f"El costo total de la red vial sin intervención es de {locale.currency(base_cost, grouping = True)}"
+    @callback(
+        Output("intervenciones-simultaneas-text-finished", "className"),
+        Output("intervenciones-simultaneas-text-unfinished", "className"),
+        Input("app-storage", "data"),  # TODO cambiar
+    )
+    def update_text(data_name):
+        """
+        Update the text of the intervenciones_simultaneas component
+        """
+        return "d-block", "d-none" #TODO
 
     # @callback(
     #     Output("puentes-criticos-map", "children"),
