@@ -1,9 +1,14 @@
+import os
 from dash import html, dcc
+
 
 def create_home_sidebar_layout():
     """
     Create layout of the home sidebar component
     """
+
+    # Get options for the radioitems
+    options = [i.replace(".pkl", "") for i in os.listdir("data")]
 
     home = html.Div(
         children = [
@@ -17,10 +22,8 @@ def create_home_sidebar_layout():
                 className = "lead",
             ),
             dcc.RadioItems(
-                options = [
-                    "datos INVIAS.xlsx", #TODO
-                ], 
-                #value = "datos INVIAS.xlsx", #TODO
+                options = options, 
+                value = options[0] if len(options) > 0 else None,
                 id = "home-radioitems",
                 style = {
                     "max-height": "250px", 
