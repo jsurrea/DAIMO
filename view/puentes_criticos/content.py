@@ -1,5 +1,4 @@
 from dash import html
-from .map import render_map
 
 def create_puentes_criticos_content_layout():
     """
@@ -15,9 +14,10 @@ def create_puentes_criticos_content_layout():
                     style = {"margin": 0},
                 ),
                 html.P(
-                    children = "El costo total de la red vial sin intervención es de $",
+                    children = "Seleccione un archivo de datos válido",
                     className = "lead",
-                    style = {"margin": 0}
+                    style = {"margin": 0},
+                    id = "puentes-criticos-text",
                 ),
             ],
             style = {
@@ -28,7 +28,9 @@ def create_puentes_criticos_content_layout():
                 "margin-bottom": "10px",
             },
         ),
-        render_map(),
+        html.Div(
+            id = "puentes-criticos-map",
+        ),
     ])
 
     return puentes_criticos

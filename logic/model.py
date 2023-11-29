@@ -31,6 +31,8 @@ class DataModel:
             # ODV
             self.cost_by_odv = None
             self.odv_by_bridge = None
+            self.flow_by_edge = None
+            self.affected_flows_by_odv = None
 
             # Costs
             self.base_cost = None

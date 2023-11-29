@@ -3,22 +3,18 @@ from dash import dcc
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from matplotlib.colors import Normalize
-from logic import get_puentes_criticos_content_data
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-def render_map():
+def render_map(map_data):
     """
     Render the map of the bridges and their costs
     """
-    
-    # Get the data from the model
-    data = get_puentes_criticos_content_data()
 
     # Create a figure with scattermapbox trace for points
     fig = go.Figure()
 
     # Create a colormap between green, yellow, and red
-    norm = Normalize(vmin = 0, vmax = max(item.porcentaje_excedente for item in data))
+    norm = Normalize(vmin = 0, vmax = max(item.porcentaje_excedente for item in map_data))
     colormap = plt.cm.get_cmap("RdYlGn")
 
     for (
@@ -27,7 +23,7 @@ def render_map():
         porcentaje_excedente, 
         latitudes, 
         longitudes,
-    ) in data:
+    ) in map_data:
         # Map cost to a color in the colormap
         color = f'rgba{tuple(int(255 * c) for c in colormap(1 - norm(porcentaje_excedente)))}' 
 
