@@ -1,8 +1,6 @@
 # Upload a new data file
 # Also update puentes_criticos according to this new dataset
 
-# Arreglar creación de params y costos
-
 # Revisar problema de que grafo se desconecta si quito muchos puentes
 
 ##### añadir funcionalidad intervencion simultanea
