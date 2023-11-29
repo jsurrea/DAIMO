@@ -1,2 +1,3 @@
 from .content import create_puentes_criticos_content_layout
 from .sidebar import create_puentes_criticos_sidebar_layout
+from .callbacks import register_puentes_criticos_callbacks

@@ -1,4 +1,14 @@
 from collections import namedtuple
+from .model import DataModel
+
+def get_puentes():
+    """
+    Get the puentes
+    """
+    data_model = DataModel()
+    if data_model.puentes is None:
+        return []
+    return data_model.puentes.id_puente.unique().tolist()
 
 #TODO: Implementar endpoints para obtener los datos de los reportes
 def get_puentes_criticos_content_data():

@@ -4,6 +4,7 @@ from .navbar import create_navbar_layout
 from .sidebar import create_sidebar_layout
 from .content import create_content_layout
 from ..home import register_home_callbacks
+from ..puentes_criticos import register_puentes_criticos_callbacks
 from .callbacks import register_app_callbacks
 from .store import create_app_storage
 
@@ -30,5 +31,6 @@ def create_app_layout():
     # Register callbacks
     register_app_callbacks()
     register_home_callbacks()
+    register_puentes_criticos_callbacks()
     
     return layout

@@ -18,21 +18,7 @@ def create_puentes_criticos_sidebar_layout():
                 children = "Seleccione los puentes críticos a visualizar:",
                 className = "lead",
             ),
-            # TODO
             dcc.Checklist(
-                options = [
-                    "Puente 1", #TODO
-                    "Puente 2", #TODO
-                    "Puente 3", #TODO
-                    "Puente 4", #TODO
-                    "Puente 5", #TODO
-                    "Puente 6", #TODO
-                    "Puente 7", #TODO
-                    "Puente 8", #TODO
-                    "Puente 9", #TODO
-                    "Puente 10", #TODO
-                ], 
-                #value = "all", #TODO
                 id = "puentes-checklist",
                 style = {
                     "max-height": "300px", 
