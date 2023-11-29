@@ -1,2 +1,3 @@
 from .content import create_intervenciones_simultaneas_content_layout
 from .sidebar import create_intervenciones_simultaneas_sidebar_layout
+from .callbacks import register_intervenciones_simultaneas_callbacks
