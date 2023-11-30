@@ -2,6 +2,13 @@ from collections import namedtuple
 from .model import DataModel
 from .costs import calculate_intervention_cost
 
+def has_data():
+    """
+    Check if the data has been loaded
+    """
+    data_model = DataModel()
+    return data_model.principal is not None
+
 def get_puentes():
     """
     Get the puentes
@@ -90,7 +97,6 @@ def get_intervenciones_simultaneas_data(puentes_to_show):
         additional_cost, flows = calculate_intervention_cost(puentes_to_show, data_model)
     
     flow_data = []
-    print("hola", data_model.flow_by_edge)
     for edge in flows:
         source = edge[0]
         target = edge[1]

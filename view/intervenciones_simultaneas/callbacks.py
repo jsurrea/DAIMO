@@ -1,6 +1,6 @@
 import locale
 from dash import Input, Output, State, callback, html, ctx
-from logic import get_puentes, get_intervenciones_simultaneas_data, get_base_cost
+from logic import get_puentes, get_intervenciones_simultaneas_data, get_base_cost, has_data
 from .map import render_map
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
@@ -13,16 +13,17 @@ def register_intervenciones_simultaneas_callbacks():
         Output("intervenciones-checklist", "options"),
         Input("app-storage", "modified_timestamp"),
         State("app-storage", "data"),
+        prevent_initial_call = True,
     )
     def update_options(timestamp, data_name):
         """
         Update the options of the sidebar
         """
         options = get_puentes()
-        if options is not None:
-            return options
-        else:
+        if not has_data() or options is None:
             return []
+        else:
+            return options
 
     @callback(
         Output("intervenciones-simultaneas-text-finished", "className"),
@@ -34,14 +35,15 @@ def register_intervenciones_simultaneas_callbacks():
         Input("app-storage", "modified_timestamp"),
         State("app-storage", "data"),
         State("intervenciones-checklist", "value"),
+        prevent_initial_call = True,
     )
     def update_content(n_clicks, timestamp, data_name, puentes_to_show):
         """
         Update the text of the intervenciones_simultaneas component
         """
-        #print("update_content", ctx.triggered)
+
         # Data is not loaded yet
-        if data_name is None:
+        if not has_data():
             return "d-none", "d-block", [], "Por favor cargue los datos primero", html.P("Por favor cargue los datos primero", className = "lead text-center m-5 alert alert-warning")
 
         # No puentes selected

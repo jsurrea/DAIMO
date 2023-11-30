@@ -73,5 +73,5 @@ def load_saved_data(filename):
     filepath = os.path.join("data", f"{filename}.pkl")
     with open(filepath, "rb") as f:
         data_model = pickle.load(f)
-    print(f"Data loaded successfully from {filename}")
     DataModel.update(data_model)
+    print(f"Data loaded successfully from {filename}")
