@@ -13,23 +13,28 @@ def render_map(map_data):
     # Create a figure with scattermapbox trace for points
     fig = go.Figure()
 
-    for (
-        latitudes, 
-        longitudes, 
-        flujo
-    ) in map_data:
+    # Unpack the data for better performance
+    latitudes, longitudes, flujo = [], [], []
+    for lat, lon, flow in map_data:
+        latitudes.append(lat[0])
+        latitudes.append(lat[1])
+        latitudes.append(None)
+        longitudes.append(lon[0])
+        longitudes.append(lon[1])
+        longitudes.append(None)
+        flujo.append(flow)
+        flujo.append(flow)
 
-        # Add scattermapbox trace for the bridge start and end coordinates
-        fig.add_trace(
-            go.Scattermapbox(
-                mode = "lines",
-                lat = latitudes,
-                lon = longitudes,
-                #marker = dict(color = color), TODO
-                line = dict(color = "blue", width = flujo / 100), #TODO
-                showlegend = False,
-            )
+    # Add a single scattermapbox trace for all edges
+    fig.add_trace(
+        go.Scattermapbox(
+            mode="lines",
+            lat=latitudes,
+            lon=longitudes,
+            line=dict(color="blue"),#, width=[f / 100 for f in flujo]),
+            showlegend=False,
         )
+    )
     
     # Set the layout properties
     fig.update_layout(

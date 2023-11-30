@@ -59,8 +59,8 @@ class DataModel:
         
         old_data_model.cost_by_odv = new_data_model.cost_by_odv
         old_data_model.odv_by_bridge = new_data_model.odv_by_bridge
-        old_data_model.flow_by_edge = new_data_model.odv_by_bridge
-        old_data_model.affected_flows_by_odv = new_data_model.odv_by_bridge
+        old_data_model.flow_by_edge = new_data_model.flow_by_edge
+        old_data_model.affected_flows_by_odv = new_data_model.affected_flows_by_odv
 
         old_data_model.base_cost = new_data_model.base_cost
         old_data_model.intervention_costs = new_data_model.intervention_costs

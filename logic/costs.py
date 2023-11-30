@@ -54,10 +54,10 @@ def calculate_intervention_cost(bridges, data_model):
         multi_target = odv_df.nodo_destino[(odv_df.nodo_origen == nodo_origen) & (odv_df.vehiculo == vehiculo)].tolist()
         distance_all, path_all = nx.single_source_dijkstra(G, source=nodo_origen, weight=vehiculo)
 
-        for i,j,flow_to_remove in affected_flows_by_odv[nodo_origen, nodo_destino, vehiculo]:
-            flow_by_edge[i,j] -= flow_to_remove
-
         for nodo_destino in multi_target:
+
+            for i,j,flow_to_remove in affected_flows_by_odv[nodo_origen, nodo_destino, vehiculo]:
+                flow_by_edge[i,j] -= flow_to_remove
 
             distance = distance_all[nodo_destino]
             path = path_all[nodo_destino]
@@ -73,6 +73,8 @@ def calculate_intervention_cost(bridges, data_model):
                 flow_by_edge[i,j] += demanda_equivalente
 
             calculated_odvs.add((nodo_origen, nodo_destino, vehiculo))
+
+            print(nodo_origen, nodo_destino, vehiculo, "cost", cost - cost_by_odv[nodo_origen, nodo_destino, vehiculo])
 
     for i,j in edge_data.keys():
         G.add_edge(i,j, **edge_data[i,j])

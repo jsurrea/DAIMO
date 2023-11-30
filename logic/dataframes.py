@@ -76,9 +76,11 @@ def clean_dataframes(dfs):
     most_common_node_by_municipality = {municipality: value[0][0] if len(value) > 0 else None for municipality, value in most_common_node_by_municipality.items()}
 
     # Replace municipalities with nodes
-    df_od["nodo_origen"] = df_od["municipio_origen"].apply(most_common_node_by_municipality.get)
-    df_od["nodo_destino"] = df_od["municipio_destino"].apply(most_common_node_by_municipality.get)
+    df_od["nodo_origen_temp"] = df_od["municipio_origen"].apply(most_common_node_by_municipality.get)
+    df_od["nodo_destino_temp"] = df_od["municipio_destino"].apply(most_common_node_by_municipality.get)
     df_od = df_od.dropna()
+    df_od["nodo_origen"] = df_od[["nodo_origen_temp","nodo_destino_temp"]].apply(lambda row: min(row), axis = 1)
+    df_od["nodo_destino"] = df_od[["nodo_origen_temp","nodo_destino_temp"]].apply(lambda row: max(row), axis = 1)
 
     # Keep only the relevant columns
     df_principal = df_principal[["source", "target", "C-2", "C-3-4", "C-5", ">C-5"]]

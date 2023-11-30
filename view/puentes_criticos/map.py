@@ -3,6 +3,7 @@ from dash import dcc
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from matplotlib.colors import Normalize
+from plotly.validator_cache import ValidatorCache
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 def render_map(map_data):
