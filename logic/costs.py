@@ -74,8 +74,6 @@ def calculate_intervention_cost(bridges, data_model):
 
             calculated_odvs.add((nodo_origen, nodo_destino, vehiculo))
 
-            print(nodo_origen, nodo_destino, vehiculo, "cost", cost - cost_by_odv[nodo_origen, nodo_destino, vehiculo])
-
     for i,j in edge_data.keys():
         G.add_edge(i,j, **edge_data[i,j])
 
