@@ -2,18 +2,14 @@ import locale
 from dash import dcc
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-from logic import get_intervenciones_simultaneas_map_data
+from logic import get_intervenciones_simultaneas_data
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-def render_map():
+def render_map(map_data):
     """
     Render the map of the simulation
     """
-    # TODO
     
-    # Get the data from the model
-    data = get_intervenciones_simultaneas_map_data()
-
     # Create a figure with scattermapbox trace for points
     fig = go.Figure()
 
@@ -21,7 +17,7 @@ def render_map():
         latitudes, 
         longitudes, 
         flujo
-    ) in data:
+    ) in map_data:
 
         # Add scattermapbox trace for the bridge start and end coordinates
         fig.add_trace(

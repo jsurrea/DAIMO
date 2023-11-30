@@ -23,7 +23,6 @@ def create_home_sidebar_layout():
             ),
             dcc.RadioItems(
                 options = options, 
-                value = options[0] if len(options) > 0 else None,
                 id = "home-radioitems",
                 style = {
                     "max-height": "250px", 

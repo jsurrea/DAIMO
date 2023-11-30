@@ -15,7 +15,7 @@ def calculate_initial_costs(data_model):
     base_cost = sum(cost_by_odv.values())
     intervention_costs = {}
     for bridge in tqdm(bridges_df.id_puente.unique(), desc="Calculating intervention costs", total=len(bridges_df.id_puente.unique())):
-        intervention_costs[bridge] = calculate_intervention_cost([bridge], data_model)
+        intervention_costs[bridge], _ = calculate_intervention_cost([bridge], data_model)
     return base_cost, intervention_costs
 
 
@@ -29,7 +29,7 @@ def calculate_intervention_cost(bridges, data_model):
     bridges_df = data_model.puentes
     odv_df = data_model.od
     G = data_model.G
-    flow_by_edge = data_model.flow_by_edge
+    flow_by_edge = data_model.flow_by_edge.copy()
     affected_flows_by_odv = data_model.affected_flows_by_odv
 
     edge_data = {}
@@ -77,4 +77,4 @@ def calculate_intervention_cost(bridges, data_model):
     for i,j in edge_data.keys():
         G.add_edge(i,j, **edge_data[i,j])
 
-    return new_cost - old_cost
+    return new_cost - old_cost, flow_by_edge 

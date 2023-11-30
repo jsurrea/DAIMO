@@ -1,5 +1,6 @@
 from collections import namedtuple
 from .model import DataModel
+from .costs import calculate_intervention_cost
 
 def get_puentes():
     """
@@ -62,14 +63,16 @@ def get_puentes_criticos_content_data(puentes_to_show):
 
     return puentes_criticos_data
 
-#TODO: Implementar endpoints para obtener los datos de los reportes
-def get_intervenciones_simultaneas_map_data():
+
+def get_intervenciones_simultaneas_data(puentes_to_show):
     """
-    Get the data for the intervenciones_simultaneas map component
+    Get the data for the intervenciones_simultaneas component
     """
 
-    FlujoArcoData = namedtuple(
-        "FlujoArcoData", 
+    data_model = DataModel()
+
+    FlowEdgeData = namedtuple(
+        "FlowEdgeData", 
         [
             "latitudes",
             "longitudes", 
@@ -77,55 +80,29 @@ def get_intervenciones_simultaneas_map_data():
         ],
     )
 
-    return [
-        FlujoArcoData(
-            latitudes = (5.318413, 5.347274),
-            longitudes = (-73.807117, -73.793354),
-            flujo = 100,
-        ),
-        FlujoArcoData(
-            latitudes = (5.347274, 5.359037),
-            longitudes = (-73.793354, -73.788623),
-            flujo = 200,
-        ),
-        FlujoArcoData(
-            latitudes = (5.359037, 5.373800),
-            longitudes = (-73.788623, -73.781019),
-            flujo = 300,
-        ),
-        FlujoArcoData(
-            latitudes = (5.373800, 5.388563),
-            longitudes = (-73.781019, -73.772415),
-            flujo = 400,
-        ),
-        FlujoArcoData(
-            latitudes = (5.388563, 5.403326),
-            longitudes = (-73.772415, -73.765811),
-            flujo = 500,
-        ),
-        FlujoArcoData(
-            latitudes = (5.403326, 5.418089),
-            longitudes = (-73.765811, -73.758207),
-            flujo = 600,
-        ),
-        FlujoArcoData(
-            latitudes = (5.418089, 5.432852),
-            longitudes = (-73.758207, -73.750603),
-            flujo = 700,
-        ),
-        FlujoArcoData(
-            latitudes = (5.432852, 5.447615),
-            longitudes = (-73.750603, -73.743999),
-            flujo = 800,
-        ),
-        FlujoArcoData(
-            latitudes = (5.447615, 5.462378),
-            longitudes = (-73.743999, -73.736395),
-            flujo = 900,
-        ),
-        FlujoArcoData(
-            latitudes = (5.462378, 5.477141),
-            longitudes = (-73.736395, -73.728791),
-            flujo = 1000,
-        ),
-    ]
+    # Data hasn't been loaded yet
+    if data_model.flow_by_edge is None:
+        return [], 0
+
+    if len(puentes_to_show) == 0:
+        additional_cost, flows = 0, data_model.flow_by_edge
+    else:
+        additional_cost, flows = calculate_intervention_cost(puentes_to_show, data_model)
+    
+    flow_data = []
+    print("hola", data_model.flow_by_edge)
+    for edge in flows:
+        source = edge[0]
+        target = edge[1]
+        latitudes = (source.split("/")[0], target.split("/")[0])
+        longitudes = (source.split("/")[1], target.split("/")[1])
+        flujo = flows[edge]
+        flow_data.append(
+            FlowEdgeData(
+                latitudes = latitudes,
+                longitudes = longitudes,
+                flujo = flujo,
+            ),
+        )
+
+    return flow_data, additional_cost

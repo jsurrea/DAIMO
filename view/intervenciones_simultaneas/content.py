@@ -1,5 +1,4 @@
 from dash import html
-from .map import render_map 
 import dash_bootstrap_components as dbc
 
 def create_intervenciones_simultaneas_content_layout():
@@ -8,9 +7,9 @@ def create_intervenciones_simultaneas_content_layout():
     """
 
     intervenciones_simultaneas = dbc.Row([
-        dbc.Col([
-            render_map(),
-        ]),
+        dbc.Col(
+            id = "intervenciones-simultaneas-map",
+        ),
         dbc.Col(
             children = [
                 html.H2(
@@ -29,9 +28,9 @@ def create_intervenciones_simultaneas_content_layout():
                                     style = {"margin": 0},
                                 ),
                                 html.P(
-                                    children = "El costo total de la red vial es de 100.000.000.000$",  #TODO
                                     className = "lead",
-                                    style = {"margin": 0, "text-align": "center"}
+                                    style = {"margin": 0, "text-align": "center"},
+                                    id = "intervenciones-simultaneas-result-text",
                                 ),
                             ],
                             style = {
@@ -48,24 +47,11 @@ def create_intervenciones_simultaneas_content_layout():
                             style = {"margin-bottom": 5}
                         ),
                         html.Ul(
-                            children = [
-                                html.Li("Puente 1", className = "lead"), #TODO
-                                html.Li("Puente 2", className = "lead"),
-                                html.Li("Puente 3", className = "lead"),
-                                html.Li("Puente 3", className = "lead"),
-                                html.Li("Puente 3", className = "lead"),
-                                html.Li("Puente 3", className = "lead"),
-                                html.Li("Puente 3", className = "lead"),
-                                html.Li("Puente 3", className = "lead"),
-                                html.Li("Puente 3", className = "lead"),
-                                html.Li("Puente 3", className = "lead"),
-                                html.Li("Puente 3", className = "lead"),
-                                html.Li("Puente 3", className = "lead"),
-                            ],
                             style = {
                                 "max-height": "220px", 
                                 "overflowY": "auto",
                             },
+                            id = "intervenciones-simultaneas-result-list",
                         ),
                     ],
                     id = "intervenciones-simultaneas-text-finished",

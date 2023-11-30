@@ -1,6 +1,7 @@
 import locale
-from dash import Input, Output, State, callback, html
-from logic import get_puentes
+from dash import Input, Output, State, callback, html, ctx
+from logic import get_puentes, get_intervenciones_simultaneas_data, get_base_cost
+from .map import render_map
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 def register_intervenciones_simultaneas_callbacks():
@@ -10,9 +11,10 @@ def register_intervenciones_simultaneas_callbacks():
     
     @callback(
         Output("intervenciones-checklist", "options"),
-        Input("app-storage", "data"),
+        Input("app-storage", "modified_timestamp"),
+        State("app-storage", "data"),
     )
-    def update_options(data_name):
+    def update_options(timestamp, data_name):
         """
         Update the options of the sidebar
         """
@@ -25,20 +27,37 @@ def register_intervenciones_simultaneas_callbacks():
     @callback(
         Output("intervenciones-simultaneas-text-finished", "className"),
         Output("intervenciones-simultaneas-text-unfinished", "className"),
-        Input("app-storage", "data"),  # TODO cambiar
+        Output("intervenciones-simultaneas-result-list", "children"),
+        Output("intervenciones-simultaneas-result-text", "children"),
+        Output("intervenciones-simultaneas-map", "children"),
+        Input("intervenciones-button", "n_clicks"),
+        Input("app-storage", "modified_timestamp"),
+        State("app-storage", "data"),
+        State("intervenciones-checklist", "value"),
     )
-    def update_text(data_name):
+    def update_content(n_clicks, timestamp, data_name, puentes_to_show):
         """
         Update the text of the intervenciones_simultaneas component
         """
-        return "d-block", "d-none" #TODO
+        #print("update_content", ctx.triggered)
+        # Data is not loaded yet
+        if data_name is None:
+            return "d-none", "d-block", [], "Por favor cargue los datos primero", html.P("Por favor cargue los datos primero", className = "lead text-center m-5 alert alert-warning")
 
-    # @callback(
-    #     Output("puentes-criticos-map", "children"),
-    #     Input("puentes-checklist", "value"),
-    # )
-    # def update_map(puentes_to_show):
-    #     """
-    #     Update the map of the intervenciones_simultaneas component
-    #     """
-    #     ...
+        # No puentes selected
+        if puentes_to_show is None:
+            puentes_to_show = []
+
+        display_finished = "d-none" if len(puentes_to_show) == 0 else "d-block"
+        display_unfinished = "d-block" if len(puentes_to_show) == 0 else "d-none"
+
+        flow_data, additional_cost = get_intervenciones_simultaneas_data(puentes_to_show)
+        percentage = additional_cost / get_base_cost() * 100
+
+        map_figure = render_map(flow_data)
+
+        puentes_list = [html.Li(i, className = "lead") for i in puentes_to_show]
+        total_cost_text = f"El costo total de la red vial es de {locale.currency(additional_cost, grouping = True)} ({percentage:.5f}% adicional)"
+
+        return display_finished, display_unfinished, puentes_list, total_cost_text, map_figure
+

@@ -48,12 +48,20 @@ class DataModel:
             old_data_model = DataModel()
         else:
             old_data_model = DataModel._instance
+
+        old_data_model.initialized = new_data_model.initialized
+
         old_data_model.principal = new_data_model.principal
         old_data_model.od = new_data_model.od
         old_data_model.puentes = new_data_model.puentes
+
         old_data_model.G = new_data_model.G
+        
         old_data_model.cost_by_odv = new_data_model.cost_by_odv
         old_data_model.odv_by_bridge = new_data_model.odv_by_bridge
+        old_data_model.flow_by_edge = new_data_model.odv_by_bridge
+        old_data_model.affected_flows_by_odv = new_data_model.odv_by_bridge
+
         old_data_model.base_cost = new_data_model.base_cost
         old_data_model.intervention_costs = new_data_model.intervention_costs
     
