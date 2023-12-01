@@ -3,7 +3,7 @@ import numpy as np
 from dash import dcc
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-from matplotlib.colors import PowerNorm
+from matplotlib.colors import Normalize
 from logic import get_intervenciones_simultaneas_data
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
@@ -23,10 +23,12 @@ def render_map(bridge_data, edge_data):
         # Paint the edges that were affected by the intervention
         # Create a divergent colormap to map the flow change to a color
         # coolwarm: 0 is blue, 0.5 is white, 1 is red
-        vabs = max(-min(item[2] for item in edge_data), max(item[2] for item in edge_data))
-        norm_positive = PowerNorm(vmin = 0, vmax = vabs, gamma = 0.5)
-        norm_negative = PowerNorm(vmin = -vabs, vmax = 0, gamma = 0.5)
-        norm = lambda x: 1 - (norm_positive(x) + 1)/2 if x >= 0 else 1 - norm_negative(x)/2
+        # Alternative: vabs = max(-min(item[2] for item in edge_data), max(item[2] for item in edge_data))
+        vmax = max(item[2] for item in edge_data)
+        vmin = min(item[2] for item in edge_data)
+        norm_positive = Normalize(vmin = 0, vmax = vmax)
+        norm_negative = Normalize(vmin = vmin, vmax = 0)
+        norm = lambda x: (1 + norm_positive(x))/2 if x >= 0 else norm_negative(x)/2
         colormap = plt.colormaps.get_cmap("coolwarm") 
 
         # For performance, classify the data by a range of its colormap value
@@ -106,10 +108,14 @@ def render_map(bridge_data, edge_data):
                 lon = longitudes,
                 hovertext = bridges,
                 line = dict(color = "black", width = 4),
-                marker = dict(color = "black", opacity = 1, size = 8),
+                marker = dict(color = "black", size = 8),
                 showlegend = False,
             )
         )
+
+    # Default map
+    else:
+        fig.add_trace(go.Scattermapbox(showlegend = False))
 
     # Set the layout properties
     fig.update_layout(

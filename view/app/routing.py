@@ -19,6 +19,9 @@ def create_app_routing():
         Input('url', 'pathname'),
     )
     def display_page(pathname):
+        """
+        Display page based on pathname
+        """
         if pathname == '/':
             return ['d-block'] * 2 + ['d-none'] * 4
         elif pathname == '/puentes-criticos':

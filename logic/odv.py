@@ -45,5 +45,4 @@ def calculate_odv_parameters(data_model):
                 flow_by_edge[i,j] += demanda_equivalente
                 affected_flows_by_odv[nodo_origen, nodo_destino, vehiculo].append((i,j,demanda_equivalente))
 
-    print("Total cost:", base_cost)
     return cost_by_odv, odv_by_bridge, flow_by_edge, affected_flows_by_odv

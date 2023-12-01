@@ -56,6 +56,10 @@ def calculate_intervention_cost(bridges, data_model):
 
         for nodo_destino in multi_target:
 
+            if nodo_destino not in distance_all:
+                print(f"Warning: {nodo_origen} -> {nodo_destino} not connected")
+                continue
+
             for i,j,flow_to_remove in affected_flows_by_odv[nodo_origen, nodo_destino, vehiculo]:
                 flow_by_edge[i,j] -= flow_to_remove
 
