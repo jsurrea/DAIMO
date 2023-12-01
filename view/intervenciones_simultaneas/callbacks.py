@@ -49,10 +49,10 @@ def register_intervenciones_simultaneas_callbacks():
         display_finished = "d-none" if len(puentes_to_show) == 0 else "d-block"
         display_unfinished = "d-block" if len(puentes_to_show) == 0 else "d-none"
 
-        flow_data, additional_cost = get_intervenciones_simultaneas_data(puentes_to_show)
+        bridge_data, edge_data, additional_cost = get_intervenciones_simultaneas_data(puentes_to_show)
         percentage = additional_cost / get_base_cost() * 100
 
-        map_figure = render_map(flow_data)
+        map_figure = render_map(bridge_data, edge_data)
 
         puentes_list = [html.Li(i, className = "lead") for i in puentes_to_show]
         total_cost_text = f"El costo total de la red vial es de {locale.currency(additional_cost, grouping = True)} ({percentage:.5f}% adicional)"

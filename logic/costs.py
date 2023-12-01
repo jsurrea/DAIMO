@@ -77,4 +77,6 @@ def calculate_intervention_cost(bridges, data_model):
     for i,j in edge_data.keys():
         G.add_edge(i,j, **edge_data[i,j])
 
+    flow_by_edge = {edge: flow_by_edge[edge] for edge in flow_by_edge if flow_by_edge[edge] != data_model.flow_by_edge[edge]}
+
     return new_cost - old_cost, flow_by_edge 

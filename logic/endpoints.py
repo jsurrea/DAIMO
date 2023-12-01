@@ -108,39 +108,40 @@ def get_intervenciones_simultaneas_data(puentes_to_show):
     Get the data for the intervenciones_simultaneas component
     """
 
-    data_model = DataModel()
-
-    FlowEdgeData = namedtuple(
-        "FlowEdgeData", 
-        [
-            "latitudes",
-            "longitudes", 
-            "flujo",
-        ],
-    )
+    data_model = DataModel() # TODO bridge_data, edge_data, additional_cost
 
     # Data hasn't been loaded yet
     if data_model.flow_by_edge is None:
-        return [], 0
+        return [], [], 0
 
     if len(puentes_to_show) == 0:
-        additional_cost, flows = 0, data_model.flow_by_edge
-    else:
-        additional_cost, flows = calculate_intervention_cost(puentes_to_show, data_model)
+        return [], [], 0
+        
+    additional_cost, flows = calculate_intervention_cost(puentes_to_show, data_model)
     
-    flow_data = []
+    edge_data = []
     for edge in flows:
+
         source = edge[0]
         target = edge[1]
         latitudes = (source.split("/")[0], target.split("/")[0])
         longitudes = (source.split("/")[1], target.split("/")[1])
-        flujo = flows[edge]
-        flow_data.append(
-            FlowEdgeData(
-                latitudes = latitudes,
-                longitudes = longitudes,
-                flujo = flujo,
-            ),
+        flow_before = data_model.flow_by_edge[edge]
+        flow_after = flows[edge]
+        flow_change = flow_after - flow_before
+
+        edge_data.append(
+            (latitudes, longitudes, flow_change, flow_before, flow_after)
         )
 
-    return flow_data, additional_cost
+    bridge_data = []
+    for puente in set(puentes_to_show):
+        source = data_model.puentes[data_model.puentes.id_puente == puente].source.values[0]
+        target = data_model.puentes[data_model.puentes.id_puente == puente].target.values[0]
+        latitudes = (source.split("/")[0], target.split("/")[0])
+        longitudes = (source.split("/")[1], target.split("/")[1])
+        bridge_data.append(
+            (puente, latitudes, longitudes)
+        )
+
+    return bridge_data, edge_data, additional_cost
