@@ -11,11 +11,9 @@ def register_intervenciones_simultaneas_callbacks():
     
     @callback(
         Output("intervenciones-checklist", "options"),
-        Input("app-storage", "modified_timestamp"),
-        State("app-storage", "data"),
-        prevent_initial_call = True,
+        Input("tmp-storage", "data"),
     )
-    def update_options(timestamp, data_name):
+    def update_options(data_name):
         """
         Update the options of the sidebar
         """
@@ -32,12 +30,10 @@ def register_intervenciones_simultaneas_callbacks():
         Output("intervenciones-simultaneas-result-text", "children"),
         Output("intervenciones-simultaneas-map", "children"),
         Input("intervenciones-button", "n_clicks"),
-        Input("app-storage", "modified_timestamp"),
-        State("app-storage", "data"),
+        Input("tmp-storage", "data"),
         State("intervenciones-checklist", "value"),
-        prevent_initial_call = True,
     )
-    def update_content(n_clicks, timestamp, data_name, puentes_to_show):
+    def update_content(n_clicks, data_name, puentes_to_show):
         """
         Update the text of the intervenciones_simultaneas component
         """

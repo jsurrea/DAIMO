@@ -12,11 +12,9 @@ def register_puentes_criticos_callbacks():
     @callback(
         Output("puentes-checklist", "options"),
         Output("puentes-checklist", "value"),
-        Input("app-storage", "modified_timestamp"),
-        State("app-storage", "data"),
-        prevent_initial_call = True,
+        Input("tmp-storage", "data"),
     )
-    def update_options(timestamp, data_name):
+    def update_options(data_name):
         """
         Update the options of the sidebar
         """
@@ -28,11 +26,9 @@ def register_puentes_criticos_callbacks():
 
     @callback(
         Output("puentes-criticos-text", "children"),
-        Input("app-storage", "modified_timestamp"),
-        State("app-storage", "data"),
-        prevent_initial_call = True,
+        Input("tmp-storage", "data"),
     )
-    def update_text(timestamp, data_name):
+    def update_text(data_name):
         """
         Update the text of the puentes_criticos component
         """
@@ -44,7 +40,6 @@ def register_puentes_criticos_callbacks():
     @callback(
         Output("puentes-criticos-map", "children"),
         Input("puentes-checklist", "value"),
-        prevent_initial_call = True,
     )
     def update_map(puentes_to_show):
         """

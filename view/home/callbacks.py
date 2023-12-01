@@ -1,5 +1,5 @@
-from logic import load_new_data, load_saved_data
-from dash import Input, Output, State, callback, html, ctx
+from logic import load_new_data, load_saved_data, has_data
+from dash import Input, Output, State, callback, html, ctx, no_update
 
 
 def register_home_callbacks():
@@ -41,6 +41,7 @@ def register_home_callbacks():
 
 
     @callback(
+        Output("tmp-storage", "data"),
         Output("app-storage", "data"),
         Output("home-radioitems", "value"),
         Input("home-radioitems", "value"),
@@ -53,9 +54,13 @@ def register_home_callbacks():
 
         trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
         if trigger_id == "app-storage":
-            load_saved_data(previous_value)
-            return previous_value, previous_value
+            # First time the app is loaded
+            if not has_data():
+                load_saved_data(previous_value)
+            return previous_value, previous_value, previous_value
         
         if selected_data is not None:
             load_saved_data(selected_data)
-            return selected_data, selected_data
+            return selected_data, selected_data, selected_data
+
+        return None, None, None
