@@ -115,7 +115,7 @@ def render_map(bridge_data, edge_data):
     fig.update_layout(
         mapbox_style = "carto-positron",
         mapbox_center = {"lat": 6, "lon": -73},
-        mapbox_zoom = 8,
+        mapbox_zoom = 7,
         margin = {"r": 0, "t": 0, "l": 0, "b": 0},
     )
     
