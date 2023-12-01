@@ -6,4 +6,5 @@ from .endpoints import (
     get_base_cost,
     has_data,
     get_non_bridge_edges,
+    get_puentes_coordinates,
 )

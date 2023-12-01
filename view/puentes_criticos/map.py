@@ -79,8 +79,8 @@ def render_map(map_data, edge_data, flow_by_node):
     # Set the layout properties
     fig.update_layout(
         mapbox_style = "carto-positron",
-        mapbox_center = {"lat": 4, "lon": -72},
-        mapbox_zoom = 5,
+        mapbox_center = {"lat": 6, "lon": -73},
+        mapbox_zoom = 7,
         margin = {"r": 0, "t": 0, "l": 0, "b": 0},
     )
     

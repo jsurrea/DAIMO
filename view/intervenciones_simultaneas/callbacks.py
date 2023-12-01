@@ -1,6 +1,6 @@
 import locale
-from dash import Input, Output, State, callback, html, ctx
-from logic import get_puentes, get_intervenciones_simultaneas_data, get_base_cost, has_data
+from dash import Input, Output, State, callback, html, ctx, no_update
+from logic import get_puentes, get_intervenciones_simultaneas_data, get_base_cost, has_data, get_puentes_coordinates
 from .map import render_map
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
@@ -31,7 +31,7 @@ def register_intervenciones_simultaneas_callbacks():
         Output("intervenciones-simultaneas-map", "children"),
         Input("intervenciones-button", "n_clicks"),
         Input("tmp-storage", "data"),
-        State("intervenciones-checklist", "value"),
+        Input("intervenciones-checklist", "value"),
     )
     def update_content(n_clicks, data_name, puentes_to_show):
         """
@@ -46,16 +46,25 @@ def register_intervenciones_simultaneas_callbacks():
         if puentes_to_show is None:
             puentes_to_show = []
 
-        display_finished = "d-none" if len(puentes_to_show) == 0 else "d-block"
-        display_unfinished = "d-block" if len(puentes_to_show) == 0 else "d-none"
+        bridge_data = get_puentes_coordinates(puentes_to_show)
 
-        bridge_data, edge_data, additional_cost = get_intervenciones_simultaneas_data(puentes_to_show)
-        percentage = additional_cost / get_base_cost() * 100
+        # Check if intervenciones-checklist triggered the callback
+        trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        if trigger_id == "intervenciones-checklist":
+            edge_data, additional_cost = [], 0
+            display_finished = no_update
+            display_unfinished = no_update
+            puentes_list = no_update
+            total_cost_text = no_update
+        else:
+            edge_data, additional_cost = get_intervenciones_simultaneas_data(puentes_to_show)
+            display_finished = "d-none" if len(puentes_to_show) == 0 else "d-block"
+            display_unfinished = "d-block" if len(puentes_to_show) == 0 else "d-none"
+            percentage = additional_cost / get_base_cost() * 100
+            puentes_list = [html.Li(i, className = "lead") for i in puentes_to_show]
+            total_cost_text = f"El costo adicional es {locale.currency(additional_cost, grouping = True)} ({percentage:.3f}%)"
 
         map_figure = render_map(bridge_data, edge_data)
 
-        puentes_list = [html.Li(i, className = "lead") for i in puentes_to_show]
-        total_cost_text = f"El costo total de la red vial es de {locale.currency(additional_cost, grouping = True)} ({percentage:.5f}% adicional)"
 
         return display_finished, display_unfinished, puentes_list, total_cost_text, map_figure
-

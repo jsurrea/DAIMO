@@ -108,14 +108,14 @@ def get_intervenciones_simultaneas_data(puentes_to_show):
     Get the data for the intervenciones_simultaneas component
     """
 
-    data_model = DataModel() # TODO bridge_data, edge_data, additional_cost
+    data_model = DataModel()
 
     # Data hasn't been loaded yet
     if data_model.flow_by_edge is None:
-        return [], [], 0
+        return [], 0
 
     if len(puentes_to_show) == 0:
-        return [], [], 0
+        return [], 0
         
     additional_cost, flows = calculate_intervention_cost(puentes_to_show, data_model)
     
@@ -128,11 +128,20 @@ def get_intervenciones_simultaneas_data(puentes_to_show):
         longitudes = (source.split("/")[1], target.split("/")[1])
         flow_before = data_model.flow_by_edge[edge]
         flow_after = flows[edge]
-        flow_change = flow_after - flow_before
+        flow_change = (flow_after - flow_before) / flow_before if flow_before != 0 else 1
 
         edge_data.append(
             (latitudes, longitudes, flow_change, flow_before, flow_after)
         )
+
+    return edge_data, additional_cost
+
+def get_puentes_coordinates(puentes_to_show):
+    """
+    Get the coordinates of the puentes
+    """
+
+    data_model = DataModel()
 
     bridge_data = []
     for puente in set(puentes_to_show):
@@ -144,4 +153,4 @@ def get_intervenciones_simultaneas_data(puentes_to_show):
             (puente, latitudes, longitudes)
         )
 
-    return bridge_data, edge_data, additional_cost
+    return bridge_data

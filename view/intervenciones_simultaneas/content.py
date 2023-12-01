@@ -42,7 +42,7 @@ def create_intervenciones_simultaneas_content_layout():
                             },
                         ),
                         html.P(
-                            children = "Visualice a su izquierda los flujos de vehículos en la red vial de Colombia. Los puentes intervenidos son:",
+                            children = "Visualice a su izquierda los flujos de vehículos afectados en la red vial de Colombia. Los puentes intervenidos son:",
                             className = "lead",
                             style = {"margin-bottom": 5}
                         ),
@@ -64,7 +64,7 @@ def create_intervenciones_simultaneas_content_layout():
                             className = "lead",
                         ),
                         html.P(
-                            children = "Por el momento, puede visualizar los flujos de la red sin intervención en el menú de la izquierda.",
+                            children = "En el mapa podrá observar los puentes seleccionados hasta el momento.",
                             className = "lead",
                         ),
                     ],
