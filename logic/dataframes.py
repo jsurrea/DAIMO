@@ -81,6 +81,8 @@ def clean_dataframes(dfs):
     df_od = df_od.dropna()
     df_od["nodo_origen"] = df_od[["nodo_origen_temp","nodo_destino_temp"]].apply(lambda row: min(row), axis = 1)
     df_od["nodo_destino"] = df_od[["nodo_origen_temp","nodo_destino_temp"]].apply(lambda row: max(row), axis = 1)
+    df_od = df_od.groupby(["nodo_origen", "nodo_destino", "vehiculo"]).sum()
+    df_od = df_od.reset_index()
 
     # Keep only the relevant columns
     df_principal = df_principal[["source", "target", "C-2", "C-3-4", "C-5", ">C-5"]]

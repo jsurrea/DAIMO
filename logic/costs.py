@@ -41,6 +41,8 @@ def calculate_intervention_cost(bridges, data_model):
         edge_data[source, target] = G.get_edge_data(source, target)
         G.remove_edge(source, target)
 
+    #print("------- changed_odvs:", len(changed_odvs))
+
     old_cost = sum(cost_by_odv[odv] for odv in changed_odvs)
     new_cost = 0
 
@@ -73,6 +75,8 @@ def calculate_intervention_cost(bridges, data_model):
                 flow_by_edge[i,j] += demanda_equivalente
 
             calculated_odvs.add((nodo_origen, nodo_destino, vehiculo))
+
+            #print(nodo_origen, nodo_destino, vehiculo, cost, cost_by_odv[nodo_origen, nodo_destino, vehiculo], distance)
 
     for i,j in edge_data.keys():
         G.add_edge(i,j, **edge_data[i,j])

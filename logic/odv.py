@@ -17,7 +17,7 @@ def calculate_odv_parameters(data_model):
     odv_by_bridge = {bridge: set() for bridge in bridges_df.id_puente.unique()}
     flow_by_edge = defaultdict(int)
     affected_flows_by_odv = defaultdict(list)
-
+    base_cost = 0
     for nodo_origen, nodo_destino, vehiculo, demanda in tqdm(odv_df.itertuples(index=False, name=None), desc="Calculating ODV parameters", total=len(odv_df)):
 
         if (nodo_origen, nodo_destino, vehiculo) in cost_by_odv:
@@ -28,11 +28,15 @@ def calculate_odv_parameters(data_model):
 
         for nodo_destino in multi_target:
 
+            if nodo_origen == "10.917914/-74.87586" and nodo_destino == "5.405322/-73.291858" and vehiculo == "C-2":
+                breakpoint()
+
             distance = distance_all[nodo_destino]
             path = path_all[nodo_destino]
 
             cost = distance * demanda
             cost_by_odv[(nodo_origen, nodo_destino, vehiculo)] = cost
+            base_cost += cost
 
             edges_path = set((min(i,j), max(i,j)) for i,j in zip(path, path[1:]))
             for bridge_affected in bridges_df.id_puente[bridge_edges.isin(edges_path)]:
@@ -45,4 +49,5 @@ def calculate_odv_parameters(data_model):
                 flow_by_edge[i,j] += demanda_equivalente
                 affected_flows_by_odv[nodo_origen, nodo_destino, vehiculo].append((i,j,demanda_equivalente))
 
+    print("Total cost:", base_cost)
     return cost_by_odv, odv_by_bridge, flow_by_edge, affected_flows_by_odv
