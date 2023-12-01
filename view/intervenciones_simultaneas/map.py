@@ -9,7 +9,12 @@ def render_map(map_data):
     """
     Render the map of the simulation
     """
-    
+    # TODO LIST
+    # 1. Plot only the edges from changed ODVs
+    # 2. Show difference of flows (color or weight of the edge)
+    # 3. While idle, change the map to show currently selected bridges
+    # 4. After change, also show the intervention bridges
+
     # Create a figure with scattermapbox trace for points
     fig = go.Figure()
 
