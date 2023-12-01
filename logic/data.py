@@ -16,6 +16,7 @@ def load_new_data(contents, filename):
     
     # Try to load the file
     try:
+        print(f"Loading data from {filename}...")
         content_type, content_string = contents.split(',')
         decoded = base64.b64decode(content_string)
         dfs = pd.read_excel(
