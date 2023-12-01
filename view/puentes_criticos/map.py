@@ -3,10 +3,12 @@ from dash import dcc
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from matplotlib.colors import Normalize
+from plotly.graph_objects import Layout
 from plotly.validator_cache import ValidatorCache
+from plotly.validators import DataValidator
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-def render_map(map_data):
+def render_map(map_data, edge_data, flow_by_node):
     """
     Render the map of the bridges and their costs
     """
@@ -16,8 +18,34 @@ def render_map(map_data):
 
     if len(map_data) > 0:
 
+        # Unpack the data for better performance
+        latitudes, longitudes, flujo = [], [], []
+        for lat, lon in edge_data:
+            latitudes.append(lat[0])
+            latitudes.append(lat[1])
+            latitudes.append(None)
+            longitudes.append(lon[0])
+            longitudes.append(lon[1])
+            longitudes.append(None)
+            flujo.append(f'Flujo de vehículos equivalente: {int(flow_by_node[lat[0] + "/" + lon[0]])}')
+            flujo.append(f'Flujo de vehículos equivalente: {int(flow_by_node[lat[1] + "/" + lon[1]])}')
+            flujo.append(None)
+
+        # Paint the edges that are not bridges
+        fig.add_trace(
+            go.Scattermapbox(
+                mode="lines+markers",
+                lat=latitudes,
+                lon=longitudes,
+                hovertext = flujo,
+                line=dict(color="hsla(240, 100%, 80%, 1)"),
+                marker=dict(color="hsla(240, 100%, 80%, 1)", opacity=0.1, allowoverlap=False),
+                showlegend=False,
+            )
+        )
+
         # Create a colormap between green, yellow, and red
-        norm = Normalize(vmin = 0, vmax = max(item.porcentaje_excedente for item in map_data))
+        norm = Normalize(vmin = min(item.porcentaje_excedente for item in map_data), vmax = max(item.porcentaje_excedente for item in map_data))
         colormap = plt.cm.get_cmap("RdYlGn")
 
         for (
@@ -36,13 +64,14 @@ def render_map(map_data):
                     mode = "lines+markers",
                     lat = latitudes,
                     lon = longitudes,
-                    name = f"Puente {puente}",
                     hovertext = "<br>".join([
+                        f"Puente {puente}",
                         f"Costo excedente por intervención: {locale.currency(costo_excedente, grouping = True)}",
                         f"Porcentaje excedente por intervención: {porcentaje_excedente*100:.5f}%",
+                        f"Flujo de vehículos equivalente: {int(flow_by_node[latitudes[0] + '/' + longitudes[0]])}",
                     ]),
-                    marker = dict(color = color),
-                    line = dict(color = color, width = 2),
+                    marker = dict(color = color, size = 6),
+                    line = dict(color = color, width = 4),
                     showlegend = False,
                 )
             )

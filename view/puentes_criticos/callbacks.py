@@ -1,7 +1,7 @@
 import locale
 from .map import render_map
 from dash import Input, Output, State, callback, html
-from logic import get_puentes, get_base_cost, get_puentes_criticos_content_data, has_data
+from logic import get_puentes, get_base_cost, get_puentes_criticos_content_data, has_data, get_non_bridge_edges
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 def register_puentes_criticos_callbacks():
@@ -48,4 +48,5 @@ def register_puentes_criticos_callbacks():
         if not has_data():
             return html.P("Por favor cargue los datos primero", className = "lead text-center m-5 alert alert-warning")
         map_data = get_puentes_criticos_content_data(puentes_to_show)
-        return render_map(map_data)
+        edge_data, flow_by_node = get_non_bridge_edges(puentes_to_show)
+        return render_map(map_data, edge_data, flow_by_node)

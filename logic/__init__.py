@@ -5,4 +5,5 @@ from .endpoints import (
     get_puentes,
     get_base_cost,
     has_data,
+    get_non_bridge_edges,
 )

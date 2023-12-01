@@ -1,4 +1,4 @@
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 from .model import DataModel
 from .costs import calculate_intervention_cost
 
@@ -69,6 +69,38 @@ def get_puentes_criticos_content_data(puentes_to_show):
         )
 
     return puentes_criticos_data
+
+
+def get_non_bridge_edges(puentes_to_show):
+    """
+    Get the non bridge edges
+    """
+    data_model = DataModel()
+    if data_model.flow_by_edge is None:
+        return []
+
+    flow_by_node = defaultdict(int)
+
+    non_bridge_edges_data = []
+    for i,j in data_model.flow_by_edge:
+
+        flow = data_model.flow_by_edge[i,j]
+
+        flow_by_node[i] += flow
+        flow_by_node[j] += flow
+
+        i,j = min(i,j), max(i,j)
+        if (i,j) in puentes_to_show:
+            continue
+
+        latitud = (i.split("/")[0], j.split("/")[0])
+        longitud = (i.split("/")[1], j.split("/")[1])
+
+        non_bridge_edges_data.append(
+            (latitud, longitud),
+        )
+
+    return non_bridge_edges_data, flow_by_node
 
 
 def get_intervenciones_simultaneas_data(puentes_to_show):
