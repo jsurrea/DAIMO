@@ -61,7 +61,7 @@ def render_map(bridge_data, edge_data):
                 longitudes.append(None)
 
                 text = "<br>".join([
-                    f"Cambio del Flujo de vehículos equivalentes: {flow_change/100:.3f}%",
+                    f"Cambio del Flujo de vehículos equivalentes: {flow_change*100:.3f}%",
                     f"Flujo de vehículos antes: {flow_before}",
                     f"Flujo de vehículos después: {flow_after}",
                 ])

@@ -128,7 +128,7 @@ def get_intervenciones_simultaneas_data(puentes_to_show):
         longitudes = (source.split("/")[1], target.split("/")[1])
         flow_before = data_model.flow_by_edge[edge]
         flow_after = flows[edge]
-        flow_change = (flow_after - flow_before) / flow_before if flow_before != 0 else 1
+        flow_change = (flow_after - flow_before) / flow_before if flow_before != 0 else 1000
 
         edge_data.append(
             (latitudes, longitudes, flow_change, flow_before, flow_after)
