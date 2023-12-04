@@ -61,7 +61,11 @@ def calculate_intervention_cost(bridges, data_model):
                 continue
 
             for i,j,flow_to_remove in affected_flows_by_odv[nodo_origen, nodo_destino, vehiculo]:
-                flow_by_edge[i,j] -= flow_to_remove
+                if flow_by_edge[i,j] - flow_to_remove < 0:
+                    print(f"Warning: {i} -> {j} flow is negative by {flow_by_edge[i,j] - flow_to_remove}")
+                    flow_by_edge[i,j] = 0
+                else:
+                    flow_by_edge[i,j] -= flow_to_remove
 
             distance = distance_all[nodo_destino]
             path = path_all[nodo_destino]
@@ -80,7 +84,5 @@ def calculate_intervention_cost(bridges, data_model):
 
     for i,j in edge_data.keys():
         G.add_edge(i,j, **edge_data[i,j])
-
-    flow_by_edge = {edge: flow_by_edge[edge] for edge in flow_by_edge if flow_by_edge[edge] != data_model.flow_by_edge[edge]}
 
     return new_cost - old_cost, flow_by_edge 
