@@ -2,25 +2,25 @@ import networkx as nx
 from tqdm import tqdm
 from collections import defaultdict
 
-def calculate_odv_parameters(data_model):
+def calculate_costs_flows_for_odvs(data_model):
     """
-    Calculate cost and bridges of the road network for each ODV.
+    Calculate cost and flows of the road network.
     """
 
-    odv_df = data_model.od
     bridges_df = data_model.puentes
+    odv_df = data_model.od
     G = data_model.G
 
     bridge_edges = bridges_df.apply(lambda row: (row["source"], row["target"]), axis = 1)
     
-    cost_by_odv = {}
-    odv_by_bridge = {bridge: set() for bridge in bridges_df.id_puente.unique()}
-    flow_by_edge = defaultdict(int)
-    affected_flows_by_odv = defaultdict(list)
+    already_checked = set()
+    flow_by_edge =  data_model.flow_by_edge.copy() if data_model.flow_by_edge else defaultdict(int)
+
+    total_cost = 0
 
     for nodo_origen, nodo_destino, vehiculo, demanda in tqdm(odv_df.itertuples(index=False, name=None), desc="Calculating ODV parameters", total=len(odv_df)):
 
-        if (nodo_origen, nodo_destino, vehiculo) in cost_by_odv:
+        if (nodo_origen, nodo_destino, vehiculo) in already_checked:
             continue
 
         multi_target = odv_df.nodo_destino[(odv_df.nodo_origen == nodo_origen) & (odv_df.vehiculo == vehiculo)].tolist()
@@ -28,21 +28,23 @@ def calculate_odv_parameters(data_model):
 
         for nodo_destino in multi_target:
 
+            if nodo_destino not in distance_all:
+                raise Exception(f"El nodo {nodo_destino} no es alcanzable desde el nodo {nodo_origen} con el vehículo {vehiculo}") 
+
             distance = distance_all[nodo_destino]
             path = path_all[nodo_destino]
 
             cost = distance * demanda
-            cost_by_odv[(nodo_origen, nodo_destino, vehiculo)] = cost
+            total_cost += cost
+
+            already_checked.add((nodo_origen, nodo_destino, vehiculo))
 
             edges_path = set((min(i,j), max(i,j)) for i,j in zip(path, path[1:]))
-            for bridge_affected in bridges_df.id_puente[bridge_edges.isin(edges_path)]:
-                odv_by_bridge[bridge_affected].add((nodo_origen, nodo_destino, vehiculo))
 
             multiplier = 3 if vehiculo == "C-2" else 4 if vehiculo == "C-3-4" else 5
             demanda_equivalente = demanda * multiplier
 
             for i,j in edges_path:
                 flow_by_edge[i,j] += demanda_equivalente
-                affected_flows_by_odv[nodo_origen, nodo_destino, vehiculo].append((i,j,demanda_equivalente))
 
-    return cost_by_odv, odv_by_bridge, flow_by_edge, affected_flows_by_odv
+    return total_cost, flow_by_edge
