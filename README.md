@@ -2,9 +2,9 @@
 
 ## Introducción
 
-DAIMO es un Dashboard interactivo que permite estudiar los costos indirectos asociados al cierre de un puente en la red vial de Colombia. Por un lado, permite identificar los puentes críticos, es decir, aquellos cuyo cierre o intervención ocasiona el mayor costo sobre la red. Por otro lado, permite simular el cierre o intervención de un conjunto de puentes para examinar el cambio en el flujo de vehículos de todos los arcos de la red.
+DAIMO es un Dashboard interactivo que permite estudiar los costos indirectos asociados al cierre de un puente en la red vial de Colombia 🇨🇴. Por un lado, permite identificar los puentes críticos, es decir, aquellos cuyo cierre o intervención ocasiona el mayor costo sobre la red. Por otro lado, permite simular el cierre o intervención de un conjunto de puentes para examinar el cambio en el flujo de vehículos de todos los arcos de la red.
 
-DAIMO se encuentra escrito en *Python* por medio de la librería *Plotly-Dash* y se ejecuta como una aplicación web a través del framework *Flask*. Permite procesar cualquier conjunto de datos válido por medio de las librerías *pandas*, *numpy* y *networkx*. Su arquitectura permite extender con facilidad nuevas páginas de funcionalidades, incluyendo modelos de Machine Learning. Además, se puede desplegar rápidamente en servicios Cloud para mejorar su rendimiento y disponibilidad.
+DAIMO se encuentra implementado en *Python* por medio de la librería *Plotly-Dash* y se ejecuta como una aplicación web a través del framework *Flask*. Permite procesar cualquier conjunto de datos válido por medio de las librerías *pandas*, *numpy* y *networkx*. Su arquitectura permite extender con facilidad nuevas páginas de funcionalidades, incluyendo modelos de Machine Learning. Además, se puede desplegar rápidamente en servicios Cloud para mejorar su rendimiento y disponibilidad.
 
 A continuación, se presenta una demostración de su funcionamiento:
 
