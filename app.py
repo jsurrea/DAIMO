@@ -13,7 +13,7 @@ def run_app(debug = False):
     app.layout = create_app_layout()
         
     # Run app
-    app.run_server(debug=debug, port=8086)
+    app.run_server(debug=debug, port=8080)
 
 
 if __name__ == "__main__":
