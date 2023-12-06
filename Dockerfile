@@ -25,8 +25,11 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy the current directory contents into the container at /app
 COPY . /app/
 
-# Expose the port that your FastAPI app will run on
+# Expose the port that your app will run on
 EXPOSE 8080
+
+# Fix issue with locale
+RUN export LC_ALL=C
 
 # Command to run the application
 CMD ["python3", "app.py"]
