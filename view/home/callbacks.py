@@ -55,7 +55,7 @@ def register_home_callbacks():
         trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
         if trigger_id == "app-storage":
             # First time the app is loaded
-            if not has_data():
+            if not has_data() and previous_value is not None:
                 load_saved_data(previous_value)
             return previous_value, previous_value, previous_value
         
