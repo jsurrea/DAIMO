@@ -31,7 +31,13 @@ def calculate_intervention_cost(bridges, data_model):
         data_model.G.remove_edge(source, target)
     
     # Calculate new cost and flows
-    new_cost, flow_by_edge = calculate_costs_flows_for_odvs(data_model)
+    try:
+        new_cost, flow_by_edge = calculate_costs_flows_for_odvs(data_model)
+    except Exception as e:
+        # Add edges back
+        for i,j in edge_data.keys():
+            data_model.G.add_edge(i,j, **edge_data[i,j])
+        raise e
 
     # Add edges back
     for i,j in edge_data.keys():
