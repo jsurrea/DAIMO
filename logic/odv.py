@@ -9,12 +9,13 @@ def calculate_costs_flows_for_odvs(data_model):
 
     bridges_df = data_model.puentes
     odv_df = data_model.od
+    principal = data_model.principal
     G = data_model.G
 
     bridge_edges = bridges_df.apply(lambda row: (row["source"], row["target"]), axis = 1)
     
     already_checked = set()
-    flow_by_edge =  data_model.flow_by_edge.copy() if data_model.flow_by_edge else defaultdict(int)
+    flow_by_edge = {(s,t): 0 for s,t in zip(principal.source, principal.target)}
 
     total_cost = 0
 
