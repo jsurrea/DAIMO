@@ -21,28 +21,25 @@ def render_map(bridge_data, edge_data):
         # Paint the edges that were affected by the intervention
         # Create a divergent colormap to map the flow change to a color
         # coolwarm: 0 is blue, 0.5 is white, 1 is red
-        vmax = max(item[2] for item in edge_data)
-        vmin = min(item[2] for item in edge_data)
-        norm_positive = Normalize(vmin = 0, vmax = vmax)
-        norm_negative = Normalize(vmin = vmin, vmax = 0)
-        norm = lambda x: (1 + norm_positive(x))/2 if x >= 0 else norm_negative(x)/2
         colormap = plt.colormaps.get_cmap("coolwarm") 
+        norm = Normalize(vmin = -1, vmax = 1)
 
         # For performance, classify the data by a range of its colormap value
         # This way, we can create a single trace for each range
         # and avoid creating a trace for each edge
         color_ranges = {}
-        bins = np.linspace(0, 1, 15)
-        bins[-1] += 1e-9
-        range_by_edge = np.digitize([norm(item[2]) for item in edge_data], bins)
+        for edge_info in edge_data:
+            if edge_info[2] == 0:
+                range_value = 0
+            elif edge_info[2] < 0:
+                range_value = -1
+            else:
+                range_value = 1
+            color_ranges.setdefault(range_value, []).append(edge_info)
 
-        for edge_info, range_index in zip(edge_data, range_by_edge):
-            color_ranges.setdefault(range_index, []).append(edge_info)
+        for range_value, edge_data_list in color_ranges.items():
 
-        for edge_data_list in color_ranges.values():
-
-            mean_flow_change = np.mean([item[2] for item in edge_data_list])
-            mean_color = colormap(norm(mean_flow_change))
+            mean_color = colormap(norm(range_value))
             color = f'rgba{tuple(int(255 * c) for c in mean_color)}'
         
             # Unpack the data for better performance
