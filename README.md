@@ -8,7 +8,7 @@ DAIMO se encuentra implementado en *Python* por medio de la librería *Plotly-Da
 
 A continuación, se presenta una demostración de su funcionamiento:
 
-https://github.com/jsurrea/DAIMO/assets/68788933/a29172fb-1f94-4e03-b6a2-5d3d386bbbf6
+https://github.com/jsurrea/DAIMO/assets/68788933/234275b1-fdf6-4cec-abf5-8dc86e2984ed
 
 ## Instalación
 
